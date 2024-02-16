@@ -4,7 +4,7 @@ from starlette.responses import PlainTextResponse, RedirectResponse
 
 from src.db import lifespan_database
 from src.schemas import TransacaoEntrada
-from src.service.clientes import extrato, nova_transacao
+from src.service import extrato, nova_transacao
 
 app: FastAPI = FastAPI(lifespan=lifespan_database)
 
