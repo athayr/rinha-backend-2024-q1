@@ -22,7 +22,7 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          POSTGRES_DB: postgres_ci
+          POSTGRES_DB: rinha
           POSTGRES_PASSWORD: postgres_ci
           POSTGRES_USER: postgres_ci
         ports:
