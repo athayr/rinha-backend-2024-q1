@@ -1,0 +1,23 @@
+[tool.isort]
+profile = 'black'
+line_length = 79
+
+[tool.mypy]
+ignore_missing_imports = true
+strict_optional = false
+plugins = [
+    "pydantic.mypy",
+ ]
+
+[tool.pytest.ini_options]
+pythonpath = "tests"
+addopts = "-p no:warnings"
+asyncio_mode = "auto"
+
+[tool.taskipy.tasks]
+lint = 'blue --check . --diff'
+format = 'blue .  && isort .'
+run = 'uvicorn src.main:app --reload'
+pre_test = 'task lint'
+test = 'pytest --cov-report=term-missing --cov=src tests'
+post_test = 'coverage html'

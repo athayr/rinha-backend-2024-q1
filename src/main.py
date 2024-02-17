@@ -1,3 +1,5 @@
+import time
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from starlette.responses import PlainTextResponse, RedirectResponse
@@ -7,11 +9,6 @@ from src.schemas import TransacaoEntrada
 from src.service import extrato, nova_transacao
 
 app: FastAPI = FastAPI(lifespan=lifespan_database)
-
-
-@app.get('/', include_in_schema=False)
-async def docs_redirect():
-    return RedirectResponse(url=app.docs_url)
 
 
 @app.exception_handler(HTTPException)
@@ -30,3 +27,15 @@ async def criar_nova_transacao(
 @app.get('/clientes/{cliente_id}/extrato')
 async def get_extrato(req: Request, cliente_id: int):
     return await extrato(req.app.state.connection_pool, cliente_id)
+
+
+# @app.middleware("http")
+# async def add_process_time_header(request: Request, call_next):
+#     start_time = time.time()
+#     response = await call_next(request)
+#     print(request.url.path)
+#     print(
+#         "Time took to process the request "
+#         "and return response is {} sec".format(time.time() - start_time)
+#     )
+#     return response

@@ -7,23 +7,20 @@ services:
       dockerfile: Dockerfile
     hostname: api1
     depends_on: 
-      - db
+      db:
+        condition: service_healthy
     environment:
       pg_host: db
-    ports:
-      - "8003:8000"
     # network_mode: host
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.4"
-    #       memory: "200MB"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.4"
+          memory: "200MB"
 
   api2:
     <<: *api 
     hostname: api2
-    ports:
-      - "8002:8000"
 
   db:
     image: postgres:16-alpine
@@ -35,12 +32,17 @@ services:
     ports:
       - "5432:5432"
     # network_mode: host
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.5"
-    #       memory: "130MB"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: "130MB"
     command: postgres -c max_connections=250
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 5
 
   nginx:
     image: nginx
@@ -52,8 +54,8 @@ services:
     ports:
       - "9999:9999"
     # network_mode: host
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: "0.2"
-    #       memory: "20MB"
+    deploy:
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: "20MB"

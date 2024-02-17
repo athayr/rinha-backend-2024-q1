@@ -3,12 +3,17 @@ from fastapi import status
 from fastapi.exceptions import HTTPException
 
 from src.queries import (
-    GET_CLIENTE_IF_EXISTS, INSERT_TRANSACAO_E_UPDATE_SALDO_TIPO_C,
-    INSERT_TRANSACAO_E_UPDATE_SALDO_TIPO_D, TRANSACOES_ROW
+    GET_CLIENTE_IF_EXISTS,
+    INSERT_TRANSACAO_E_UPDATE_SALDO_TIPO_C,
+    INSERT_TRANSACAO_E_UPDATE_SALDO_TIPO_D,
+    TRANSACOES_ROW,
 )
 from src.schemas import (
-    ExtratoSaldo, LimiteSaldo, TipoTransacao, Transacao,
-    TransacaoEntrada
+    ExtratoSaldo,
+    LimiteSaldo,
+    TipoTransacao,
+    Transacao,
+    TransacaoEntrada,
 )
 
 
