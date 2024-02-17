@@ -37,6 +37,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      - name: Create tables
+        run: |
+           PGPASSWORD=${{ env.DB_PASSWORD }} psql -U ${{ env.DB_USERNAME }} -h ${{ env.DB_HOST }} -f configs/db.sql
+
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
