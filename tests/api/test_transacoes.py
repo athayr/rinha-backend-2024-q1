@@ -20,7 +20,7 @@ class TestTransacoesRotas:
         cliente = random.randint(6, 500)
         res = await client.post(
             f'/{cliente}/transacoes',
-            json={'valor': 100, 'tipo': 'd', 'descricao': str('teste 404')},
+            json={'valor': 100, 'tipo': 'd', 'descricao': 'teste 404'},
         )
 
         assert res.status_code == HTTP_404_NOT_FOUND
@@ -38,7 +38,7 @@ class TestTransacoesRotas:
             json={
                 'valor': abs(extrato.json()['saldo']['total']) + 1000,
                 'tipo': 'c',
-                'descricao': str('credito'),
+                'descricao': 'credito',
             },
         )
 
