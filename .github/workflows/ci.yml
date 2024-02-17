@@ -39,7 +39,7 @@ jobs:
 
       - name: Create tables
         run: |
-           PGPASSWORD=${{ env.DB_PASSWORD }} psql -U ${{ env.DB_USERNAME }} -h ${{ env.DB_HOST }} -f configs/db.sql
+           PGPASSWORD=${{ env.DB_PASSWORD }} psql -U ${{ env.DB_USERNAME }} -h ${{ env.DB_HOST }} -d =${{ env.DB_NAME}} -f configs/db.sql
 
       - name: Set up Python
         uses: actions/setup-python@v3
