@@ -1,0 +1,65 @@
+name: rinha_q1_psql
+
+on:
+  push:
+    branches: 
+      - main
+  pull_request:
+    branches: 
+      - main
+
+env:
+  DB_HOST: localhost
+  DB_USERNAME: postgres_ci
+  DB_PASSWORD: postgres_ci
+  DB_NAME: rinha
+
+jobs:
+  container-job:
+
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: postgres_ci
+          POSTGRES_PASSWORD: postgres_ci
+          POSTGRES_USER: postgres_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+
+      - name: blue check
+        run: blue --check .
+
+      - name: isort check
+        run: isort --check .
+
+      - name: Pytest
+        run: |
+          export pg_user=${{ env.DB_USERNAME }}
+          export pg_password=${{ env.DB_PASSWORD }}
+          export pg_database=${{ env.DB_NAME }}
+          pytest tests
+
+      - name: Mypy
+        continue-on-error: true
+        run: mypy src
